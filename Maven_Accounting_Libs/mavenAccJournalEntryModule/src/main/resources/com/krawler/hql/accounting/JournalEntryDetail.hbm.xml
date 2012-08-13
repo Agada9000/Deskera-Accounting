@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.krawler.hql.accounting.JournalEntryDetail" table="jedetail">
+    <id column="id" name="ID">
+      <generator class="uuid"/>
+    </id>
+    <property name="srno" type="integer">
+      <column default="0" name="srno"/>
+    </property>
+    <property name="debit" type="true_false">
+      <column name="debit" not-null="true"/>
+    </property>
+    <property name="amount" type="double">
+      <column name="amount" not-null="true"/>
+    </property>
+    <property name="description" type="string">
+      <column length="255" name="description"/>
+    </property>
+    <many-to-one class="com.krawler.hql.accounting.Account" name="account" not-null="true"/>
+    <many-to-one class="com.krawler.hql.accounting.JournalEntry" name="journalEntry" not-null="true"/>
+    <many-to-one class="com.krawler.common.admin.Company" name="company" not-null="true"/>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.krawler.hql.accounting.Cyclecount" table="cyclecount">
+    <id column="id" name="ID">
+      <generator class="uuid"/>
+    </id>
+    <property name="iniquantity" type="integer">
+      <column name="iniquantity" not-null="true"/>
+    </property>
+    <property name="countedquantity" type="integer">
+      <column name="countedquantity" not-null="true"/>
+    </property>
+    <property name="status" type="integer">
+      <column name="status" not-null="true"/>
+    </property>
+    <property name="reason" type="string">
+      <column length="255" name="reason"/>
+    </property>
+    <property name="countDate" type="timestamp">
+      <column name="countdate" not-null="true"/>
+    </property>
+    <many-to-one class="com.krawler.hql.accounting.Product" name="product" not-null="true"/>
+  </class>
+</hibernate-mapping>

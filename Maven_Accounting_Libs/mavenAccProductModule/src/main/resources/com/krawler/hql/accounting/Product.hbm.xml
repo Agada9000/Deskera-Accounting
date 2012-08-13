@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.krawler.hql.accounting.Product" table="product">
+    <id column="id" name="ID">
+      <generator class="uuid"/>
+    </id>
+    <property name="name" type="string">
+      <column length="50" name="name" not-null="true"/>
+    </property>
+    <property name="productid" type="string">
+      <column length="50" name="productid" not-null="true"/>
+    </property>
+    <property name="description" type="string">
+      <column length="255" name="description"/>
+    </property>
+    <property name="reorderLevel" type="integer">
+      <column name="reorderlevel" not-null="true"/>
+    </property>
+    <property name="reorderQuantity" type="integer">
+      <column name="reorderquantity" not-null="true"/>
+    </property>
+    <property name="leadTimeInDays" type="integer">
+      <column name="leadtimeindays" not-null="true"/>
+    </property>
+    <property name="deleted" type="true_false">
+      <column name="deleteflag" not-null="true"/>
+    </property>
+    <property name="syncable" type="true_false">
+      <column default="false" name="syncable" not-null="true"/>
+    </property>
+    <set cascade="all" inverse="true" name="children">
+      <key column="parent"/>
+      <one-to-many class="com.krawler.hql.accounting.Product"/>
+    </set>
+    <many-to-one class="com.krawler.hql.accounting.UnitOfMeasure" name="unitOfMeasure"/>
+    <many-to-one class="com.krawler.hql.accounting.Account" name="purchaseAccount"/>
+    <many-to-one class="com.krawler.hql.accounting.Account" name="salesAccount"/>
+    <many-to-one class="com.krawler.hql.accounting.Account" name="purchaseReturnAccount"/>
+    <many-to-one class="com.krawler.hql.accounting.Account" name="salesReturnAccount"/>
+    <many-to-one class="com.krawler.hql.accounting.Product" name="parent"/>
+    <many-to-one class="com.krawler.common.admin.Company" name="company" not-null="true"/>
+    <many-to-one class="com.krawler.hql.accounting.Producttype" name="producttype" not-null="true"/>
+    <many-to-one class="com.krawler.hql.accounting.Vendor" name="vendor"/>
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.krawler.hql.accounting.Vendor" table="vendor">
+    <id column="id" name="ID">
+      <generator class="foreign">
+        <param name="property">account</param>
+      </generator>
+    </id>
+    <property name="title" type="string">
+      <column length="25" name="title"/>
+    </property>
+    <property name="name" type="string">
+      <column length="50" name="name" not-null="true"/>
+    </property>
+    <property name="address" type="string">
+      <column length="255" name="address"/>
+    </property>
+    <property name="email" type="string">
+      <column length="50" name="email"/>
+    </property>
+    <property name="contactNumber" type="string">
+      <column length="25" name="contactno"/>
+    </property>
+    <property name="altContactNumber" type="string">
+      <column length="25" name="altcontactno"/>
+    </property>
+    <property name="fax" type="string">
+      <column length="25" name="fax"/>
+    </property>
+    <property name="bankaccountno" type="string">
+      <column length="255" name="bankaccountno"/>
+    </property>
+    <property name="other" type="string">
+      <column length="255" name="other"/>
+    </property>
+    <property name="createdOn" type="timestamp">
+      <column name="createdon"/>
+    </property>
+    <property name="modifiedOn" type="timestamp">
+      <column name="modifiedon"/>
+    </property>
+    <property name="preferedDeliveryMode" type="integer">
+      <column default="1" name="preferedDeliveryMode" not-null="true"/>
+    </property>
+    <property name="taxEligible" type="true_false">
+      <column default="false" name="taxeligible" not-null="true"/>
+    </property>
+    <property name="taxIDNumber" type="string">
+      <column length="20" name="taxidnumber"/>
+    </property>
+    <property name="mailOn" type="timestamp">
+      <column name="mailon"/>
+    </property>
+    <property name="taxSet" type="true_false">
+      <column default="false" name="taxset" not-null="true"/>
+    </property>
+    <many-to-one class="com.krawler.hql.accounting.Term" name="debitTerm"/>
+    <one-to-one class="com.krawler.hql.accounting.Account" constrained="true" name="account"/>
+    <many-to-one class="com.krawler.common.admin.Company" name="company" not-null="true"/>
+  </class>
+</hibernate-mapping>

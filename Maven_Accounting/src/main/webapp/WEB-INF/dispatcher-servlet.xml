@@ -1,0 +1,1721 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <!-- alternate XML view resolver, invoked if view returned from controller matches views.xml mapping -->
+    <bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+    	<property name="order" value="1" />
+    </bean>
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix"><value>/WEB-INF/jsp/</value></property>
+        <property name="suffix"><value>.jsp</value></property>
+        <property name="viewClass"><value>org.springframework.web.servlet.view.JstlView</value></property>
+    </bean>
+
+    <bean id="aopAdvisor"  name="aopAdvisor" class="com.krawler.spring.accounting.handler.AopAdvisor">
+        <property name = "kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="authHandlerDAO">
+            <ref bean="authHandlerdao"/>
+        </property>
+        <property name="exportRecord">
+            <ref bean="accExportRecord"/>
+        </property>
+        <property name="accCreditNoteDAO">
+            <ref bean="accCreditNoteDao"/>
+        </property>
+        <property name="accReceiptDAO">
+            <ref bean="accReceiptDao"/>
+        </property>
+        <property name="accDebitNoteDAO">
+            <ref bean="accDebitNoteDao"/>
+        </property>
+        <property name="accVendorPaymentDAO">
+            <ref bean="accVendorPaymentDao"/>
+        </property>
+    </bean>
+
+    <bean id="commonFunctions"  name="commonFunctions" class="com.krawler.spring.accounting.handler.CommonFunctions">
+        <property name = "kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="authHandlerDAO">
+            <ref bean="authHandlerdao"/>
+        </property>
+        <property name="exportRecord">
+            <ref bean="accExportRecord"/>
+        </property>
+        <property name="accTaxcontroller">
+            <ref bean="accTaxcontroller"/>
+        </property>
+        <property name="accProductcontroller">
+            <ref bean="accProductcontroller"/>
+        </property>
+        <property name="accTermcontroller">
+            <ref bean="accTermcontroller"/>
+        </property>
+         <property name="accCurrencycontroller">
+            <ref bean="accCurrencycontroller"/>
+        </property>
+    </bean>
+
+    <bean name="aopProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>accInvoiceController</value>
+                <value>accGoodsReceiptController</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>aopAdvisor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="sessionvalidator"  name="sessionvalidator" class="com.krawler.esp.handlers.sessionAdvisor"/>
+
+    <bean name="proxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>*Controller</value>
+                <value>*ControllerCMN</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>sessionvalidator</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="accAccountDao" class="com.krawler.spring.accounting.account.accAccountDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accAccountController" class="com.krawler.spring.accounting.account.accAccountController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accAccountDAO">
+            <ref bean="accAccountDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="importHandler">
+            <ref bean="importHandler"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+    <bean id="accAccountControllerCMN" class="com.krawler.spring.accounting.account.accAccountControllerCMN">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accAccountDAO">
+            <ref bean="accAccountDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accPaymentDAO">
+            <ref bean="accPaymentDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accDepreciationDAO">
+            <ref bean="accDepreciationDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accCustomerDao" class="com.krawler.spring.accounting.customer.accCustomerDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accCustomerController" class="com.krawler.spring.accounting.customer.accCustomerController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accCustomerDAO">
+            <ref bean="accCustomerDao"/>
+        </property>
+        <property name="accAccountDAO">
+            <ref bean="accAccountDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="importHandler">
+            <ref bean="importHandler"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+    <bean id="accCustomerControllerCMN" class="com.krawler.spring.accounting.customer.accCustomerControllerCMN">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accAccountDAO">
+            <ref bean="accAccountDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accPaymentDAO">
+            <ref bean="accPaymentDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accCustomerDAO">
+            <ref bean="accCustomerDao"/>
+        </property>
+        <property name="accInvoiceDAO">
+            <ref bean="accInvoiceDao"/>
+        </property>
+        <property name="accInvoiceCMN">
+            <ref bean="accInvoiceCMN"/>
+        </property>
+        <property name="accReceiptDAO">
+            <ref bean="accReceiptDao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accVendorDao" class="com.krawler.spring.accounting.vendor.accVendorDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accVendorController" class="com.krawler.spring.accounting.vendor.accVendorController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accVendorDAO">
+            <ref bean="accVendorDao"/>
+        </property>
+        <property name="accAccountDAO">
+            <ref bean="accAccountDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="importHandler">
+            <ref bean="importHandler"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+    <bean id="accVendorControllerCMN" class="com.krawler.spring.accounting.vendor.accVendorControllerCMN">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accAccountDAO">
+            <ref bean="accAccountDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accPaymentDAO">
+            <ref bean="accPaymentDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accVendorDAO">
+            <ref bean="accVendorDao"/>
+        </property>
+        <property name="accGoodsReceiptDAO">
+            <ref bean="accGoodsReceiptDao"/>
+        </property>
+        <property name="accGoodsReceiptCMN">
+            <ref bean="accGoodsReceiptCommon"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accountHandlerDao" class="com.krawler.spring.accounting.handler.AccountingHandlerDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+
+    <bean id="accCompanyPreferencesDao" class="com.krawler.spring.accounting.companypreferances.accCompanyPreferencesImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accCompanyPreferencesController" class="com.krawler.spring.accounting.companypreferances.accCompanyPreferencesController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accInvoiceDao" class="com.krawler.spring.accounting.invoice.accInvoiceImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accInvoiceController" class="com.krawler.spring.accounting.invoice.accInvoiceController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accInvoiceDAO">
+            <ref bean="accInvoiceDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accDiscountDAO">
+            <ref bean="accDiscountDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+    <bean id="accRepeateInvoices" class="com.krawler.spring.accounting.invoice.accRepeateInvoice">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accInvoiceDAO">
+            <ref bean="accInvoiceDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accDiscountDAO">
+            <ref bean="accDiscountDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+    </bean>
+    <bean id="accInvoiceControllerCMN" class="com.krawler.spring.accounting.invoice.accInvoiceControllerCMN">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accInvoiceDAO">
+            <ref bean="accInvoiceDao"/>
+        </property>
+        <property name="accCreditNoteDAO">
+            <ref bean="accCreditNoteDao"/>
+        </property>
+        <property name="accReceiptDAO">
+            <ref bean="accReceiptDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accDiscountDAO">
+            <ref bean="accDiscountDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accCustomerDAO">
+            <ref bean="accCustomerDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="accInvoiceCommon">
+            <ref bean="accInvoiceCMN"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+
+    <bean id="accInvoiceCMN" class="com.krawler.spring.accounting.invoice.accInvoiceCMN">
+        <property name="accCreditNoteDAO">
+            <ref bean="accCreditNoteDao"/>
+        </property>
+        <property name="accInvoiceDAO">
+            <ref bean="accInvoiceDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="accReceiptDAO">
+            <ref bean="accReceiptDao"/>
+        </property>
+    </bean>
+
+
+    <bean id="accSalesOrderDao" class="com.krawler.spring.accounting.salesorder.accSalesOrderImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accSalesOrderController" class="com.krawler.spring.accounting.salesorder.accSalesOrderController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accSalesOrderDAO">
+            <ref bean="accSalesOrderDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+    <bean id="accSalesOrderControllerCMN" class="com.krawler.spring.accounting.salesorder.accSalesOrderControllerCMN">
+        <property name="accSalesOrderDAO">
+            <ref bean="accSalesOrderDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accInvoiceDAO">
+            <ref bean="accInvoiceDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accCreditNoteDao" class="com.krawler.spring.accounting.creditnote.accCreditNoteImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accCreditNoteController" class="com.krawler.spring.accounting.creditnote.accCreditNoteController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accCreditNoteDAO">
+            <ref bean="accCreditNoteDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accDiscountDAO">
+            <ref bean="accDiscountDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accReceiptDao" class="com.krawler.spring.accounting.receipt.accReceiptImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accReceiptController" class="com.krawler.spring.accounting.receipt.accReceiptController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accReceiptDAO">
+            <ref bean="accReceiptDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accPaymentDAO">
+            <ref bean="accPaymentDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+   <bean id="accReceiptControllerCMN" class="com.krawler.spring.accounting.receipt.accReceiptControllerCMN">
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accInvoiceCommon">
+            <ref bean="accInvoiceCMN"/>
+        </property>
+        <property name="accReceiptDAO">
+            <ref bean="accReceiptDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+<!-- AOP (Around) : Call checkYearLock() before calling saveJournalEntry() -->
+    <bean id="CheckYearLock"  name="CheckYearLock" class="com.krawler.spring.accounting.handler.CheckYearLock">
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+    </bean>
+    <!-- Proxy Implementation Class -->
+    <bean id = "yearLockProxy" class = "org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>accJournalEntryDao</value>
+            </list>
+        </property>
+        <property name = "interceptorNames">
+            <list>
+                <value>CheckYearLock</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="accJournalEntryDao" class="com.krawler.spring.accounting.journalentry.accJournalEntryImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accJEController" class="com.krawler.spring.accounting.journalentry.accJournalEntryController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+    <bean id="accJEControllerCMN" class="com.krawler.spring.accounting.journalentry.accJournalEntryControllerCMN">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accBankReconciliationDAO">
+            <ref bean="accBankReconciliationDao"/>
+        </property>
+        <property name="accInvoiceDAO">
+            <ref bean="accInvoiceDao"/>
+        </property>
+        <property name="accReceiptDAO">
+            <ref bean="accReceiptDao"/>
+        </property>
+        <property name="accVendorPaymentDAO">
+            <ref bean="accVendorPaymentDao"/>
+        </property>
+        <property name="accGoodsReceiptDAO">
+            <ref bean="accGoodsReceiptDao"/>
+        </property>
+        <property name="accCreditNoteDAO">
+            <ref bean="accCreditNoteDao"/>
+        </property>
+        <property name="accDebitNoteDAO">
+            <ref bean="accDebitNoteDao"/>
+        </property>
+        <property name="accDepreciationDAO">
+            <ref bean="accDepreciationDao"/>
+        </property>
+        <property name="accVendorDAO">
+            <ref bean="accVendorDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accAccountDAO">
+            <ref bean="accAccountDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accProductDao" class="com.krawler.spring.accounting.product.accProductImpl">
+        <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accProductcontroller" class="com.krawler.spring.accounting.product.accProductController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+    <bean id="accProductControllerCMN" class="com.krawler.spring.accounting.product.accProductControllerCMN">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accPurchaseOrderDAO">
+            <ref bean="accPurchaseOrderDao"/>
+        </property>
+        <property name="accSalesOrderDAO">
+            <ref bean="accSalesOrderDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name = "accInvoiceDAO">
+        	<ref bean="accInvoiceDao"/>
+        </property>
+        <property name = "accGoodsReceiptDAO">
+        	<ref bean="accGoodsReceiptDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accTaxDao" class="com.krawler.spring.accounting.tax.accTaxImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accTaxcontroller" class="com.krawler.spring.accounting.tax.accTaxController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accCurrencyDao" class="com.krawler.spring.accounting.currency.accCurrencyImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accCurrencycontroller" class="com.krawler.spring.accounting.currency.accCurrencyController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accPurchaseOrderDao" class="com.krawler.spring.accounting.purchaseorder.accPurchaseOrderImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accPOController" class="com.krawler.spring.accounting.purchaseorder.accPurchaseOrderController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accPurchaseOrderDAO">
+            <ref bean="accPurchaseOrderDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+    <bean id="accPOControllerCMN" class="com.krawler.spring.accounting.purchaseorder.accPurchaseOrderControllerCMN">
+        <property name="accPurchaseOrderDAO">
+            <ref bean="accPurchaseOrderDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accGoodsReceiptDAO">
+            <ref bean="accGoodsReceiptDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+            <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accGoodsReceiptDao" class="com.krawler.spring.accounting.goodsreceipt.accGoodsReceiptImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accGoodsReceiptController" class="com.krawler.spring.accounting.goodsreceipt.accGoodsReceiptController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accGoodsReceiptDAO">
+            <ref bean="accGoodsReceiptDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accDiscountDAO">
+            <ref bean="accDiscountDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+    <bean id="accGoodsReceiptCommon" class="com.krawler.spring.accounting.goodsreceipt.accGoodsReceiptCMN">
+        <property name="accDebitNoteDAO">
+            <ref bean="accDebitNoteDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="accGoodsReceiptDAO">
+            <ref bean="accGoodsReceiptDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="accVendorPaymentDAO">
+            <ref bean="accVendorPaymentDao"/>
+        </property>
+
+
+    </bean>
+    <bean id="accGoodsReceiptControllerCMN" class="com.krawler.spring.accounting.goodsreceipt.accGoodsReceiptControllerCMN">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accGoodsReceiptDAO">
+            <ref bean="accGoodsReceiptDao"/>
+        </property>
+        <property name="accVendorPaymentDAO">
+            <ref bean="accVendorPaymentDao"/>
+        </property>
+        <property name="accDebitNoteDAO">
+            <ref bean="accDebitNoteDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accVendorDAO">
+            <ref bean="accVendorDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accDiscountDAO">
+            <ref bean="accDiscountDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="accGoodsReceiptCMN">
+            <ref bean="accGoodsReceiptCommon"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accDebitNoteDao" class="com.krawler.spring.accounting.debitnote.accDebitNoteImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accDebitNoteController" class="com.krawler.spring.accounting.debitnote.accDebitNoteController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accDebitNoteDAO">
+            <ref bean="accDebitNoteDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accDiscountDAO">
+            <ref bean="accDiscountDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accVendorPaymentDao" class="com.krawler.spring.accounting.vendorpayment.accVendorPaymentImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accVendorPaymentController" class="com.krawler.spring.accounting.vendorpayment.accVendorPaymentController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accGoodsReceiptDAO">
+            <ref bean="accGoodsReceiptDao"/>
+        </property>
+        <property name="accVendorPaymentDAO">
+            <ref bean="accVendorPaymentDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accPaymentDAO">
+            <ref bean="accPaymentDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+   <bean id="accVendorPaymentControllerCMN" class="com.krawler.spring.accounting.vendorpayment.accVendorPaymentControllerCMN">
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accGoodsReceiptCMN">
+            <ref bean="accGoodsReceiptCommon"/>
+        </property>
+        <property name="accVendorPaymentDAO">
+            <ref bean="accVendorPaymentDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+    <bean id="accTermDao" class="com.krawler.spring.accounting.term.accTermImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accTermcontroller" class="com.krawler.spring.accounting.term.accTermController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accTermDAO">
+            <ref bean="accTermDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accPaymentDao" class="com.krawler.spring.accounting.payment.accPaymentImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accPaymentController" class="com.krawler.spring.accounting.payment.accPaymentController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accPaymentDAO">
+            <ref bean="accPaymentDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+
+    <bean id="accDiscountDao" class="com.krawler.spring.accounting.discount.accDiscountImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+
+    <bean id="accBankReconciliationDao" class="com.krawler.spring.accounting.bankreconciliation.accBankReconciliationImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accBankReconciliationController" class="com.krawler.spring.accounting.bankreconciliation.accBankReconciliationController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accBankReconciliationDAO">
+            <ref bean="accBankReconciliationDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accDepreciationDao" class="com.krawler.spring.accounting.depreciation.accDepreciationImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accDepreciationController" class="com.krawler.spring.accounting.depreciation.accDepreciationController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accDepreciationDAO">
+            <ref bean="accDepreciationDao"/>
+        </property>
+        <property name="accAccountDAO">
+            <ref bean="accAccountDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accUomDao" class="com.krawler.spring.accounting.uom.accUomImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accUomController" class="com.krawler.spring.accounting.uom.accUomController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accUomDAO">
+            <ref bean="accUomDao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accMasterItemsDao" class="com.krawler.spring.accounting.masteritems.accMasterItemsImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accMasterItemsController" class="com.krawler.spring.accounting.masteritems.accMasterItemsController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accMasterItemsDAO">
+            <ref bean="accMasterItemsDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <bean id="accReportsController" class="com.krawler.spring.accounting.reports.accReportsController">
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accJournalEntryDAO">
+            <ref bean="accJournalEntryDao"/>
+        </property>
+        <property name="accAccountDAO">
+            <ref bean="accAccountDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="accGoodsReceiptDAO">
+            <ref bean="accGoodsReceiptDao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="exportRecord">
+            <ref bean="accExportRecord"/>
+        </property>
+        <property name="accGoodsReceiptCMN">
+            <ref bean="accGoodsReceiptCommon"/>
+        </property>
+        <property name="accInvoiceDAO">
+            <ref bean="accInvoiceDao"/>
+        </property>
+        <property name="authHandlerDAO">
+            <ref bean="authHandlerdao"/>
+        </property>
+        <property name="accInvoiceCommon">
+            <ref bean="accInvoiceCMN"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accCostCenterDAO">
+            <ref bean="accCostCenterDAO"/>
+        </property>
+        <property name="accReceiptDAO">
+            <ref bean="accReceiptDao"/>
+        </property>
+        <property name="accVendorPaymentDAO">
+            <ref bean="accVendorPaymentDao"/>
+        </property>
+        <property name="accDebitNoteDAO">
+            <ref bean="accDebitNoteDao"/>
+        </property>
+        <property name="accDepreciationDAO">
+            <ref bean="accDepreciationDao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+    <bean id="accDashboardController" class="com.krawler.spring.accounting.handler.accDashboardController">
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="accCustomerDAO">
+            <ref bean="accCustomerDao"/>
+        </property>
+        <property name="accVendorDAO">
+            <ref bean="accVendorDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="permissionHandlerDAO">
+            <ref bean="permissionHandlerdao"/>
+        </property>
+        <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+        </property>
+    </bean>
+
+    <bean id="newCompanyHandler" class="com.krawler.spring.accounting.handler.NewCompanyHandler">
+        <property name="accTermDAO">
+            <ref bean="accTermDao"/>
+        </property>
+        <property name="accUomDAO">
+            <ref bean="accUomDao"/>
+        </property>
+        <property name="accAccountDAO">
+            <ref bean="accAccountDao"/>
+        </property>
+        <property name="accPaymentDAO">
+            <ref bean="accPaymentDao"/>
+        </property>
+        <property name="accMasterItemsDAO">
+            <ref bean="accMasterItemsDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accountingHandlerDAO">
+            <ref bean="accountHandlerDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+    </bean>
+
+
+    <!-- LOGIN -->
+
+    <!--KwlCommonTables Controller-->
+    <bean id="kwlCommonTablesdao" class="com.krawler.spring.common.kwlCommonTablesDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="kwlCommonTablesController" class="com.krawler.spring.common.kwlCommonTablesController">
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <!--Help Tour-->
+    <bean id="firstRunHelpdao" class="com.krawler.spring.firstRunHelp.firstRunHelpDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+
+    <bean id="EditHelpController" class="com.krawler.spring.firstRunHelp.firstRunHelpController">
+        <property name="firstRunHelpDAO">
+            <ref bean="firstRunHelpdao"/>
+        </property>
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <!--Company Details Controller-->
+    <bean id="companyDetailsdao" class="com.krawler.spring.companyDetails.companyDetailsDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+        <property name="storageHandlerImpl">
+            <ref bean="storageHandlerdao"/>
+        </property>
+    </bean>
+    <bean id="companyDetailsController" class="com.krawler.spring.companyDetails.companyDetailsController">
+        <property name="companyDetailsDAO">
+            <ref bean="companyDetailsdao"/>
+        </property>
+        <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+    </bean>
+
+    <!--Profile Handler Controller-->
+    <bean id="profileHandlerdao" class="com.krawler.spring.profileHandler.profileHandlerDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="profileHandlerController" class="com.krawler.spring.profileHandler.profileHandlerController">
+        <property name="profileHandlerDAO">
+            <ref bean="profileHandlerdao"/>
+        </property>
+        <property name="permissionHandlerDAO">
+            <ref bean="permissionHandlerdao"/>
+        </property>
+        <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+    </bean>
+
+    <!--Permission Handler Controller-->
+    <bean id="permissionHandlerdao" class="com.krawler.spring.permissionHandler.permissionHandlerDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="permissionHandlercontroller" class="com.krawler.spring.permissionHandler.permissionHandlerController">
+        <property name="permissionHandlerDAO">
+            <ref bean="permissionHandlerdao"/>
+        </property>
+        <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+        </property>
+        <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+    </bean>
+
+    <!--Storage Handler Controller-->
+    <bean id="storageHandlerdao" class="com.krawler.spring.storageHandler.storageHandlerImpl"/>
+
+    <!--Session Handler Controller-->
+    <bean id="sessionHandlerdao" class="com.krawler.spring.sessionHandler.sessionHandlerImpl"/>
+
+     <!--Audit Trail Controller-->
+    <bean id="auditTraildao" class="com.krawler.spring.auditTrailModule.auditTrailDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+      <property name="storageHandlerImpl">
+            <ref bean="storageHandlerdao"/>
+      </property>
+      <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+      </property>
+    </bean>
+
+    <bean id="accAuditTrailCMN" class="com.krawler.spring.accounting.auditTrail.accAuditTrailControllerCMN">
+      <property name="auditTrailDAO">
+            <ref bean="auditTraildao"/>
+      </property>
+      <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+      </property>
+    </bean>
+
+    <!--Auth Handler Controller-->
+    <bean id="authHandlerdao" class="com.krawler.spring.authHandler.authHandlerDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+      <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+      </property>
+    </bean>
+    <bean id="authHandlercontroller" class="com.krawler.spring.authHandler.authHandlerController">
+        <property name="authHandlerDAO">
+            <ref bean="authHandlerdao"/>
+        </property>
+        <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+        </property>
+         <property name="permissionHandlerDAO">
+            <ref bean="permissionHandlerdao"/>
+        </property>
+        <property name="profileHandlerDAO">
+            <ref bean="profileHandlerdao"/>
+        </property>
+        <property name="companyDetailsDAO">
+            <ref bean="companyDetailsdao"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <!--export Pdf Template Controller-->
+    <bean id="exportPdfTemplateDao" class="com.krawler.spring.exportFunctionality.exportPdfTemplateDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="exportPdfTemplateController" class="com.krawler.spring.exportFunctionality.exportPdfTemplateController">
+        <property name="exportPdfTemplateDAO">
+            <ref bean="exportPdfTemplateDao"/>
+        </property>
+        <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+        </property>
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+    </bean>
+
+    <!--Chart Controller-->
+    <bean id = "accChartDao" class = "com.krawler.spring.accounting.chart.accChartImpl">
+        <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+
+    <bean id = "accChartControllerCMN" class = "com.krawler.spring.accounting.chart.accChartControllerCMN">
+        <property name = "accChartDAO">
+            <ref bean = "accChartDao"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+    </bean>
+
+    <!-- Export MPX Servlet-->
+    <bean id="exportMPXdao" class="com.krawler.spring.exportFunctionality.exportMPXDAOImpl">
+        <property name="sessionFactory">
+            <ref bean="mySessionFactory"/>
+        </property>
+        <property name="authHandlerDAO">
+            <ref bean="authHandlerdao"/>
+        </property>
+        <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+        </property>
+        <property name="storageHandlerImpl">
+            <ref bean="storageHandlerdao"/>
+        </property>
+    </bean>
+
+    <!-- Export Record Servlet-->
+    <bean id = "accExportRecord" class = "com.krawler.spring.exportFuctionality.ExportRecord">
+        <property name = "kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="authHandlerDAO">
+            <ref bean="authHandlerdao"/>
+        </property>
+        <property name="accInvoiceDAO">
+            <ref bean="accInvoiceDao"/>
+        </property>
+        <property name="accSalesOrderDAO">
+            <ref bean="accSalesOrderDao"/>
+        </property>
+        <property name="accPurchaseOrderDAO">
+            <ref bean="accPurchaseOrderDao"/>
+        </property>
+        <property name="accCreditNoteDAO">
+            <ref bean="accCreditNoteDao"/>
+        </property>
+        <property name="accDebitNoteDAO">
+            <ref bean="accDebitNoteDao"/>
+        </property>
+        <property name="accGoodsReceiptDAO">
+            <ref bean="accGoodsReceiptDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="exportMPXDAOImpl">
+            <ref bean="exportMPXdao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+    </bean>
+    <bean id = "accExportRecordController" class = "com.krawler.spring.exportFuctionality.ExportrecordController">
+        <property name = "kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="authHandlerDAO">
+            <ref bean="authHandlerdao"/>
+        </property>
+        <property name="exportRecord">
+            <ref bean="accExportRecord"/>
+        </property>
+    </bean>
+
+    <!-- Export Invoice Servlet-->
+    <bean id = "accExportInvoiceController" class = "com.krawler.spring.exportFuctionality.ExportinvController">
+        <property name = "kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="authHandlerDAO">
+            <ref bean="authHandlerdao"/>
+        </property>
+    </bean>
+
+    <!-- AOP (Around) : Call custome functinality around saveRecord() -->
+    <bean id="AroundImportRecord" name="AroundImportRecord" class="com.krawler.spring.accounting.handler.ImportRecordAdvisor">
+        <property name="sessionFactory">
+            <ref bean="mySessionFactory"/>
+        </property>
+    </bean>
+    <!-- Proxy Implementation Class -->
+    <bean id = "ImportRecordProxy" class = "org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames" value="importDao"/>
+        <property name = "interceptorNames">
+            <list>
+                <value>AroundImportRecord</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Import Data Beans-->
+    <bean id = "importDao" class = "com.krawler.spring.importFunctionality.ImportImpl">
+        <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id = "importHandler" class = "com.krawler.spring.importFunctionality.ImportHandler">
+        <property name="importDAO">
+            <ref bean="importDao"/>
+        </property>
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="masterTables">
+            <list>
+                <value>MasterItem</value>
+                <value>com.krawler.hql.accounting.MasterItem</value>
+            </list>
+        </property>
+    </bean>
+    <bean id = "importcontroller" class = "com.krawler.spring.importFunctionality.ImportController">
+        <property name="importDAO">
+            <ref bean="importDao"/>
+        </property>
+        <property name="importHandler">
+            <ref bean="importHandler"/>
+        </property>
+    </bean>
+
+    <bean id="errorMessagecontroller" class="com.krawler.spring.accounting.handler.errorMessageController">
+            <property name="authHandlerDAO">
+                <ref bean="authHandlerdao"/>
+            </property>
+            <property name="sessionHandlerImpl">
+                <ref bean="sessionHandlerdao"/>
+            </property>
+            <property name="companyDetailsDAO">
+                <ref bean="companyDetailsdao"/>
+            </property>
+    </bean>
+
+    <bean id="generalController" class="com.krawler.common.wrapper.generalController">
+        <!--property name="hrmsCommonController">
+            <ref bean="hrmsCommonController"/>
+        </property-->
+        <!--property name="kwlCommonTablesController">
+            <ref bean="kwlCommonTablescontroller"/>
+        </property-->
+        <!--property name="SimpleUrlHandlerMapping">
+            <ref bean="urlMapping"/>
+        </property-->
+        <property name="successView">
+            <value>jsonView</value>
+        </property>
+    </bean>
+
+    <!--My Account -->
+    <bean id = "accCommonTablesDAO" class = "com.krawler.spring.common.AccCommonTablesDAOImpl">
+        <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id = "accCommonController" class = "com.krawler.spring.common.CommonFnController">
+        <property name="profileHandlerDAO">
+            <ref bean="profileHandlerdao"/>
+        </property>
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accCommonTablesDAO">
+            <ref bean="accCommonTablesDAO"/>
+        </property>
+    </bean>
+
+<!-- Company Setup  -->
+    <bean id = "newCompanySetupController" class = "com.krawler.spring.accounting.handler.NewCompanySetupController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+        <property name="accAccountDAO">
+            <ref bean="accAccountDao"/>
+        </property>
+        <property name="accTaxDAO">
+            <ref bean="accTaxDao"/>
+        </property>
+        <property name="accCurrencyDAO">
+            <ref bean="accCurrencyDao"/>
+        </property>
+        <property name="accCompanyPreferencesDAO">
+            <ref bean="accCompanyPreferencesDao"/>
+        </property>
+        <property name="accPaymentDAO">
+            <ref bean="accPaymentDao"/>
+        </property>
+        <property name="accProductDAO">
+            <ref bean="accProductDao"/>
+        </property>
+        <property name="companyDetailsDAO">
+            <ref bean="companyDetailsdao"/>
+        </property>
+    </bean>
+
+    <!-- Cost Center -->
+    <bean id = "accCostCenterDAO" class = "com.krawler.spring.accounting.costCenter.AccCostCenterImpl">
+        <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+
+    <bean id = "accCostCenterController" class = "com.krawler.spring.accounting.costCenter.AccCostCenterController">
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="accCostCenterDAO">
+            <ref bean="accCostCenterDAO"/>
+        </property>
+    </bean>
+
+	<!-- Locale Implementation beans -->
+	<bean id="props2jsController" class="com.krawler.common.util.Props2jsController" />
+	
+    <bean id="localejsController" class="com.krawler.common.util.LocaleJsController" />
+	
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/ACCCompanyPref/*.do">accCompanyPreferencesController</prop>
+                <prop key="/ACCAccount/*.do">accAccountController</prop>
+                <prop key="/ACCAccountCMN/*.do">accAccountControllerCMN</prop>
+                <prop key="/ACCCustomer/*.do">accCustomerController</prop>
+                <prop key="/ACCCustomerCMN/*.do">accCustomerControllerCMN</prop>
+                <prop key="/ACCVendor/*.do">accVendorController</prop>
+                <prop key="/ACCVendorCMN/*.do">accVendorControllerCMN</prop>
+                <prop key="/ACCInvoice/*.do">accInvoiceController</prop>
+                <prop key="/ACCInvoiceCMN/*.do">accInvoiceControllerCMN</prop>
+                <prop key="/ACCRepeateInvoice/*.do">accRepeateInvoices</prop>
+                <prop key="/ACCSalesOrder/*.do">accSalesOrderController</prop>
+                <prop key="/ACCSalesOrderCMN/*.do">accSalesOrderControllerCMN</prop>
+                <prop key="/ACCCreditNote/*.do">accCreditNoteController</prop>
+                <prop key="/ACCReceipt/*.do">accReceiptController</prop>
+                <prop key="/ACCReceiptCMN/*.do">accReceiptControllerCMN</prop>
+                <prop key="/ACCJournal/*.do">accJEController</prop>
+                <prop key="/ACCJournalCMN/*.do">accJEControllerCMN</prop>
+                <prop key="/ACCPurchaseOrder/*.do">accPOController</prop>
+                <prop key="/ACCPurchaseOrderCMN/*.do">accPOControllerCMN</prop>
+                <prop key="/ACCGoodsReceipt/*.do">accGoodsReceiptController</prop>
+                <prop key="/ACCGoodsReceiptCMN/*.do">accGoodsReceiptControllerCMN</prop>
+                <prop key="/ACCDebitNote/*.do">accDebitNoteController</prop>
+                <prop key="/ACCVendorPayment/*.do">accVendorPaymentController</prop>
+                <prop key="/ACCVendorPaymentCMN/*.do">accVendorPaymentControllerCMN</prop>
+                <prop key="/ACCProduct/*.do">accProductcontroller</prop>
+                <prop key="/ACCProductCMN/*.do">accProductControllerCMN</prop>
+                <prop key="/ACCUoM/*.do">accUomController</prop>
+                <prop key="/ACCTax/*.do">accTaxcontroller</prop>
+                <prop key="/ACCMaster/*.do">accMasterItemsController</prop>
+                <prop key="/ACCCurrency/*.do">accCurrencycontroller</prop>
+                <prop key="/ACCTerm/*.do">accTermcontroller</prop>
+                <prop key="/ACCPaymentMethods/*.do">accPaymentController</prop>
+                <prop key="/ACCDepreciation/*.do">accDepreciationController</prop>
+                <prop key="/ACCReconciliation/*.do">accBankReconciliationController</prop>
+                <prop key="/ACCReports/*.do">accReportsController</prop>
+                <prop key="/ACCDashboard/*.do">accDashboardController</prop>
+                <prop key="/CommonFunctions/*.do">commonFunctions</prop>
+                <prop key="/ACCChart/*.do">accChartControllerCMN</prop>
+                <prop key="/ACCExportRecord/*.do">accExportRecordController</prop>
+                <prop key="/ACCExportInvoice/*.do">accExportInvoiceController</prop>
+                <prop key="/ImportRecords/*.do">importcontroller</prop>
+                <prop key="/ACCCommon/*.do">accCommonController</prop>
+                <prop key="/ACCCompanySetup/*.do">newCompanySetupController</prop>
+
+                <!-- Common -->
+                <prop key="/CostCenter/*.do">accCostCenterController</prop>
+                <prop key="/kwlCommonTables/*.do">kwlCommonTablesController</prop>
+                <prop key="/ProfileHandler/*.do">profileHandlerController</prop>
+                <prop key="/PermissionHandler/*.do">permissionHandlercontroller</prop>
+                <prop key="/AuthHandler/*.do">authHandlercontroller</prop>
+                <prop key="/CompanyDetails/*.do">companyDetailsController</prop>
+				<prop key="/ACCAudit/*.do">accAuditTrailCMN</prop>
+				<prop key="/ExportPDF/*.do">exportPdfTemplateController</prop>
+                <prop key="/EditHelp/*.do">EditHelpController</prop>                
+                <prop key="error.do">errorMessagecontroller</prop>
+                <prop key="/General/*.do">generalController</prop>
+                
+                <!-- Locale Implementation -->
+                <prop key="/msgs/*.js">props2jsController</prop>
+                <prop key="/keys/*.js">props2jsController</prop> 
+                <prop key="/wtf-lang-locale.js">localejsController</prop>
+            </props>
+        </property>
+        <property name="interceptors">
+            <list>
+                <ref bean="openSessionInViewInterceptor" />
+            </list>
+        </property>
+    </bean>
+</beans>

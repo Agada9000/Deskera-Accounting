@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.krawler.hql.accounting.BankReconciliation" table="bankreconciliation">
+    <id column="id" name="ID">
+      <generator class="uuid"/>
+    </id>
+    <property name="startDate" type="timestamp">
+      <column name="startdate" not-null="true"/>
+    </property>
+    <property name="endDate" type="timestamp">
+      <column name="enddate" not-null="true"/>
+    </property>
+    <property name="clearingAmount" type="double">
+      <column name="clearingamount" not-null="true"/>
+    </property>
+    <property name="endingAmount" type="double">
+      <column name="endingamount" not-null="true"/>
+    </property>
+    <property name="deleted" type="true_false">
+      <column name="deleteflag" not-null="true"/>
+    </property>
+    <set cascade="all-delete-orphan" inverse="true" name="details">
+      <key column="bankReconciliation"/>
+      <one-to-many class="com.krawler.hql.accounting.BankReconciliationDetail"/>
+    </set>
+    <many-to-one class="com.krawler.hql.accounting.Account" name="account" not-null="true"/>
+    <many-to-one class="com.krawler.common.admin.Company" name="company" not-null="true"/>
+  </class>
+</hibernate-mapping>

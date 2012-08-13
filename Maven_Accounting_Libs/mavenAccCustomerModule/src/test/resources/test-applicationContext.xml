@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
+        <!-- DB setting for server build -->
+        <!--property name="url"><value>jdbc:mysql://localhost:3306/springaccounting</value></property>
+        <property name="username"><value>krawlersqladmin</value></property>
+        <property name="password"><value>Krawler[X]</value></property-->
+        
+        <!-- DB setting for local build -->
+        <property name="url"><value>jdbc:mysql://localhost:3306/acc26july</value></property>
+        <property name="username"><value>krawler</value></property>
+        <property name="password"><value>krawler</value></property>
+    </bean>
+
+    <bean id ="openSessionInViewInterceptor" name="openSessionInViewInterceptor"
+        class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+        <property name="sessionFactory">
+            <ref bean="mySessionFactory" />
+        </property>
+        <property name="flushMode">
+			<bean id="org.springframework.orm.hibernate3.HibernateAccessor.FLUSH_AUTO" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+		</property>
+    </bean>
+
+    <bean id="mySessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource"><ref bean="myDataSource"/></property>
+        <property name="mappingResources">
+            <list>
+                <value>/com/krawler/common/admin/User.hbm.xml</value>
+                <value>/com/krawler/common/admin/UserLogin.hbm.xml</value>
+                <value>/com/krawler/common/admin/Language.hbm.xml</value>
+                <value>/com/krawler/common/admin/Company.hbm.xml</value>
+                <value>/com/krawler/common/admin/KWLTimeZone.hbm.xml</value>
+                <value>/com/krawler/common/admin/KWLDateFormat.hbm.xml</value>
+                <value>/com/krawler/common/admin/ProjectFeature.hbm.xml</value>
+                <value>/com/krawler/common/admin/ProjectActivity.hbm.xml</value>
+                <value>/com/krawler/common/admin/UserPermission.hbm.xml</value>
+                <value>/com/krawler/common/admin/KWLCurrency.hbm.xml</value>
+                <value>/com/krawler/common/admin/Country.hbm.xml</value>
+                <value>/com/krawler/common/admin/CompanyHoliday.hbm.xml</value>
+                <value>/com/krawler/common/admin/AuditGroup.hbm.xml</value>
+                <value>/com/krawler/common/admin/AuditAction.hbm.xml</value>
+                <value>/com/krawler/common/admin/AuditTrail.hbm.xml</value>
+                <value>/com/krawler/common/admin/CompanyType.hbm.xml</value>
+                <value>/com/krawler/common/admin/Role.hbm.xml</value>
+                <value>/com/krawler/common/admin/Rolelist.hbm.xml</value>
+                <value>/com/krawler/common/admin/RoleUserMapping.hbm.xml</value>
+                <value>/com/krawler/common/admin/Modules.hbm.xml</value>
+                <value>/com/krawler/common/admin/DefaultHeader.hbm.xml</value>
+                <value>/com/krawler/common/admin/ColumnHeader.hbm.xml</value>
+                <value>/com/krawler/common/admin/ImportLog.hbm.xml</value>
+                <value>/com/krawler/common/admin/CostCenter.hbm.xml</value>
+                <!-- Company related mapping files -->
+                <!--value>/com/krawler/hql/accounting/DefaultAccount.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/DefaultPaymentMethod.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/DefaultUnitOfMeasure.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/DefaultCompanyAccountPreferences.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/CompanyAccountPreferences.hbm.xml</value>-->
+                <value>/com/krawler/hql/accounting/DefaultTerm.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/DefaultAccount.hbm.xml</value>                
+                <value>/com/krawler/hql/accounting/Account.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Group.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/MasterGroup.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/MasterItem.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Term.hbm.xml</value>
+                <!--
+                <value>/com/krawler/hql/accounting/YearLock.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/DefaultMasterItem.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Inventory.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/JournalEntry.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/JournalEntryDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/PriceList.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Product.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/UnitOfMeasure.hbm.xml</value>
+                -->
+                <!-- Common mapping files for vendor and customer-->
+                <!--
+                value>/com/krawler/hql/accounting/Discount.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/PaymentMethod.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/PayDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Card.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Cheque.hbm.xml</value-->
+                <!-- Customer mapping files -->
+                <value>/com/krawler/hql/accounting/Customer.hbm.xml</value>                
+                <!--<value>/com/krawler/hql/accounting/Invoice.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/InvoiceDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/CreditNote.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/CreditNoteDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/CreditNoteDiscount.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Receipt.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/ReceiptDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/SalesOrder.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/SalesOrderDetail.hbm.xml</value>
+                <value>/com/krawler/common/admin/Projreport_Template.hbm.xml</value-->
+                <!-- Vendor mapping files -->
+                <!--
+                <value>/com/krawler/hql/accounting/Vendor.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/GoodsReceipt.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/GoodsReceiptDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/DebitNote.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/DebitNoteDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/DebitNoteDiscount.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Payment.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/PaymentDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/PurchaseOrder.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/PurchaseOrderDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingInvoiceDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingInvoice.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingReceiptDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingReceipt.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Tax.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/TaxList.hbm.xml</value>                
+                <value>/com/krawler/hql/accounting/BankReconciliation.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BankReconciliationDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/DefaultExchangeRate.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/ExchangeRate.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/DefaultExcahangeRateDetails.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/ExchangeRateDetails.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/DepreciationDetail.hbm.xml</value>
+                <value>/com/krawler/common/admin/Apiresponse.hbm.xml</value>
+
+                <value>/com/krawler/hql/accounting/Producttype.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/ProductAssembly.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/ProductBuild.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/ProductBuildDetails.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Cyclecount.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/ProductCyclecount.hbm.xml</value>
+                <value>/com/krawler/common/admin/EditHelp.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingGoodsReceipt.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingGoodsReceiptDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingPayment.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingPaymentDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingPurchaseOrder.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingPurchaseOrderDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingSalesOrder.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingSalesOrderDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingCreditNote.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingCreditNoteDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingCreditNoteDiscount.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingDebitNote.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingDebitNoteDetail.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/BillingDebitNoteDiscount.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/RepeatedInvoices.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Tax1099Category.hbm.xml</value>
+                <value>/com/krawler/hql/accounting/Tax1099Accounts.hbm.xml</value>
+                <value>/deposit.hbm.xml</value-->
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">com.krawler.esp.hibernate.impl.ExMySQLInnoDBDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+      <property name="sessionFactory" ref="mySessionFactory" />
+    </bean>
+    <bean id="accAccountDao" class="com.krawler.spring.accounting.account.accAccountDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accCustomerDao" class="com.krawler.spring.accounting.customer.accCustomerDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="accountHandlerDao" class="com.krawler.spring.accounting.handler.AccountingHandlerDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="authHandlerdao" class="com.krawler.spring.authHandler.authHandlerDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+      <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+      </property>
+    </bean>
+    <bean id="exportMPXdao" class="com.krawler.spring.exportFunctionality.exportMPXDAOImpl">
+        <property name="sessionFactory">
+            <ref bean="mySessionFactory"/>
+        </property>
+        <property name="authHandlerDAO">
+            <ref bean="authHandlerdao"/>
+        </property>
+        <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+        </property>
+        <property name="storageHandlerImpl">
+            <ref bean="storageHandlerdao"/>
+        </property>
+    </bean>
+    <bean id = "importDao" class = "com.krawler.spring.importFunctionality.ImportImpl">
+        <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id = "importHandler" class = "com.krawler.spring.importFunctionality.ImportHandler">
+        <property name="importDAO">
+            <ref bean="importDao"/>
+        </property>
+        <property name="txnManager">
+            <ref bean="txManager"/>
+        </property>
+        <property name="kwlCommonTablesDAO">
+            <ref bean="kwlCommonTablesdao"/>
+        </property>
+    </bean>
+    <bean id="kwlCommonTablesdao" class="com.krawler.spring.common.kwlCommonTablesDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+    </bean>
+    <bean id="auditTraildao" class="com.krawler.spring.auditTrailModule.auditTrailDAOImpl">
+      <property name="sessionFactory"><ref bean="mySessionFactory"/></property>
+      <property name="storageHandlerImpl">
+            <ref bean="storageHandlerdao"/>
+      </property>
+      <property name="sessionHandlerImpl">
+            <ref bean="sessionHandlerdao"/>
+      </property>
+    </bean>
+    <!--Storage Handler Controller-->
+    <bean id="storageHandlerdao" class="com.krawler.spring.storageHandler.storageHandlerImpl"/>
+
+    <!--Session Handler Controller-->
+    <bean id="sessionHandlerdao" class="com.krawler.spring.sessionHandler.sessionHandlerImpl"/>
+</beans>

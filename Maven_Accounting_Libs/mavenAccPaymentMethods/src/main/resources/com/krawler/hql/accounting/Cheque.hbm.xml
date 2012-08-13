@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.krawler.hql.accounting.Cheque" table="cheque">
+    <id column="id" name="ID">
+      <generator class="uuid"/>
+    </id>
+    <property name="chequeNo" type="string">
+      <column length="20" name="chequeno" not-null="true"/>
+    </property>
+    <property name="bankName" type="string">
+      <column length="50" name="bankname" not-null="false"/>
+    </property>
+    <property name="description" type="string">
+      <column length="255" name="description"/>
+    </property>
+    <many-to-one class="com.krawler.hql.accounting.MasterItem" name="BankMasterItem"/>
+  </class>
+</hibernate-mapping>

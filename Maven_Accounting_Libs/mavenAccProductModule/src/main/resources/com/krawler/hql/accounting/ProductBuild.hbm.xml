@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.krawler.hql.accounting.ProductBuild" table="productbuild">
+        <id column="id" name="ID">
+          <generator class="uuid"/>
+        </id>
+        <property name="entryDate" type="timestamp">
+          <column name="entrydate" not-null="true"/>
+        </property>
+        <property name="memo" type="string">
+          <column length="255" name="memo"/>
+        </property>
+        <property name="refno" type="string">
+          <column length="50" name="refno"/>
+        </property>
+        <property name="quantity" type="integer">
+          <column name="quantity" not-null="true"/>
+        </property>
+        <many-to-one class="com.krawler.hql.accounting.Product" name="product" not-null="true"/>
+        <many-to-one class="com.krawler.common.admin.Company" name="company" not-null="true"/>
+        <many-to-one cascade="all" class="com.krawler.hql.accounting.JournalEntry" name="journalentry" unique="true"/>
+    </class>
+</hibernate-mapping>

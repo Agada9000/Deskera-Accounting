@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.krawler.hql.accounting.CompanyAccountPreferences" table="compaccpreferences">
+    <id column="id" name="ID">
+      <generator class="foreign">
+        <param name="property">company</param>
+      </generator>
+    </id>
+    <property name="financialYearFrom" type="timestamp">
+      <column name="fyfrom" not-null="true"/>
+    </property>
+    <property name="firstFinancialYearFrom" type="timestamp">
+      <column name="firstfyfrom" />
+    </property>
+    <property name="bookBeginningFrom" type="timestamp">
+      <column name="bbfrom" not-null="true"/>
+    </property>
+    <property name="journalEntryNumberFormat" type="string">
+      <column length="50" name="jenoformat"/>
+    </property>
+    <property name="invoiceNumberFormat" type="string">
+      <column length="50" name="invnoformat"/>
+    </property>
+    <property name="creditNoteNumberFormat" type="string">
+      <column length="50" name="cmnoformat"/>
+    </property>
+    <property name="receiptNumberFormat" type="string">
+      <column length="50" name="receiptnoformat"/>
+    </property>
+    <property name="goodsReceiptNumberFormat" type="string">
+      <column length="50" name="grnoformat"/>
+    </property>
+    <property name="purchaseOrderNumberFormat" type="string">
+      <column length="50" name="ponoformat"/>
+    </property>
+    <property name="salesOrderNumberFormat" type="string">
+      <column length="50" name="sonoformat"/>
+    </property>
+    <property name="debitNoteNumberFormat" type="string">
+      <column length="50" name="dnnoformat"/>
+    </property>
+    <property name="paymentNumberFormat" type="string">
+      <column length="50" name="paymentnoformat"/>
+    </property>
+    <property name="cashSaleNumberFormat" type="string">
+      <column length="50" name="csnoformat"/>
+    </property>
+    <property name="cashPurchaseNumberFormat" type="string">
+      <column length="50" name="cpnoformat"/>
+    </property>
+    <property name="billingReceiptNumberFormat" type="string">
+      <column length="50" name="brnoformat"/>
+    </property>
+    <property name="billingCashSaleNumberFormat" type="string">
+      <column length="50" name="bcsnoformat"/>
+    </property>
+    <property name="billingCashPurchaseNumberFormat" type="string">
+      <column length="50" name="bcpnoformat"/>
+    </property>
+    <property name="billingInvoiceNumberFormat" type="string">
+      <column length="50" name="binoformat"/>
+    </property>
+    <property name="billingGoodsReceiptNumberFormat" type="string">
+      <column length="50" name="bgrnoformat"/>
+    </property>
+    <property name="billingPaymentNumberFormat" type="string">
+      <column length="50" name="bpnoformat"/>
+    </property>
+    <property name="billingCreditNoteNumberFormat" type="string">
+      <column length="50" name="bcnnoformat"/>
+    </property>
+    <property name="billingDebitNoteNumberFormat" type="string">
+      <column length="50" name="bdnnoformat"/>
+    </property>
+    <property name="billingSalesOrderNumberFormat" type="string">
+      <column length="50" name="bsonoformat"/>
+    </property>
+    <property name="billingPurchaseOrderNumberFormat" type="string">
+      <column length="50" name="bponoformat"/>
+    </property>
+    <property name="quotationNumberFormat" type="string">
+      <column length="50" name="qnoformat"/>
+    </property>
+    <property name="emailInvoice" type="true_false">
+      <column name="eminvoice" not-null="true" default="false"/>
+    </property>
+    <property name="withoutInventory" type="true_false">
+      <column name="withoutinventory" not-null="true" default="false"/>
+    </property>
+     <property name="withoutTax1099" type="true_false">
+      <column name="withouttax1099" not-null="true" default="true"/>
+    </property>
+    <property name="setupDone" type="true_false">
+      <column name="setupdone" not-null="true" default="false"/>
+    </property>
+    <property name="currencyChange" type="true_false">
+      <column name="currencychange" not-null="true" default="false"/>
+    </property>
+    <property name="countryChange" type="true_false">
+      <column name="countrychange" not-null="true" default="false"/>
+    </property>
+    <many-to-one cascade="all" class="com.krawler.hql.accounting.Account" name="discountGiven" not-null="true" unique="true"/>
+    <many-to-one cascade="all" class="com.krawler.hql.accounting.Account" name="discountReceived" not-null="true" unique="true"/>
+    <many-to-one cascade="all" class="com.krawler.hql.accounting.Account" name="shippingCharges" unique="true"/>
+    <many-to-one cascade="all" class="com.krawler.hql.accounting.Account" name="otherCharges" not-null="true" unique="true"/>
+    <many-to-one cascade="all" class="com.krawler.hql.accounting.Account" name="cashAccount" not-null="true" unique="true"/>
+    <many-to-one cascade="all" class="com.krawler.hql.accounting.Account" name="foreignexchange" not-null="true" unique="true"/>
+    <many-to-one cascade="all" class="com.krawler.hql.accounting.Account" name="depereciationAccount" not-null="true" unique="true"/>
+    <many-to-one class="com.krawler.common.admin.CompanyType" name="companyType"/>
+    <one-to-one class="com.krawler.common.admin.Company" constrained="true" name="company"/>
+  </class>
+</hibernate-mapping>

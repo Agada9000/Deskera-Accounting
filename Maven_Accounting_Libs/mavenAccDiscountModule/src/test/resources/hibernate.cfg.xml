@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">com.krawler.esp.hibernate.impl.ExMySQLInnoDBDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <!-- DB setting for local build -->
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/acc26july?useUnicode=true&amp;characterEncoding=UTF-8</property>
+    <property name="hibernate.connection.username">krawler</property>
+    <property name="hibernate.connection.password">krawler</property>
+
+    <!-- DB setting for server build -->
+    <!--property name="hibernate.connection.url">jdbc:mysql://localhost:3306/springaccounting?useUnicode=true&amp;characterEncoding=UTF-8</property>
+    <property name="hibernate.connection.username">krawlersqladmin</property>
+    <property name="hibernate.connection.password">Krawler[X]</property-->
+    <property name="show_sql">false</property>
+    <property name="hbm2ddl.auto">update</property>
+    <!-- Use the C3P0 connection pool provider -->
+    <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+    <property name="hibernate.c3p0.min_size">5</property>
+    <property name="hibernate.c3p0.max_size">50</property>
+    <property name="hibernate.c3p0.timeout">300</property>
+    <property name="hibernate.c3p0.max_statements">50</property>
+    <property name="hibernate.c3p0.idle_test_period">3000</property>
+    <property name="hibernate.c3p0.acquire_increment">3</property>
+    <!-- JDBC connection pool (use the built-in) -->
+    <!-- <property name="connection.pool_size">10</property> -->
+    <!-- Common mapping files -->
+    <mapping resource="com/krawler/common/admin/User.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/UserLogin.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/Language.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/Company.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/KWLTimeZone.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/KWLDateFormat.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/ProjectFeature.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/ProjectActivity.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/UserPermission.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/KWLCurrency.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/Country.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/CompanyHoliday.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/AuditGroup.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/AuditAction.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/AuditTrail.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/CompanyType.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/Role.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/Rolelist.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/RoleUserMapping.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/Modules.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/DefaultHeader.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/ColumnHeader.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/ImportLog.hbm.xml"/>
+
+    <!-- Company related mapping files -->
+  <!--  <mapping resource="com/krawler/hql/accounting/DefaultAccount.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/DefaultPaymentMethod.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/DefaultTerm.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/DefaultUnitOfMeasure.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/DefaultCompanyAccountPreferences.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/DefaultMasterItem.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/CompanyAccountPreferences.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Account.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Group.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Inventory.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/JournalEntry.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/JournalEntryDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/PriceList.hbm.xml"/>
+    Product reqires vendor mapping
+    <mapping resource="com/krawler/hql/accounting/Producttype.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Product.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/ProductAssembly.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/ProductBuild.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/ProductBuildDetails.hbm.xml"/>
+      <mapping resource="com/krawler/hql/accounting/UnitOfMeasure.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/MasterGroup.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/MasterItem.hbm.xml"/>-->
+     <!--Common mapping files for vendor and customer-->
+    <!--<mapping resource="com/krawler/hql/accounting/Term.hbm.xml"/>-->
+    <mapping resource="com/krawler/hql/accounting/Discount.hbm.xml"/>
+    <!--<mapping resource="com/krawler/hql/accounting/PaymentMethod.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/PayDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Card.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Cheque.hbm.xml"/>
+     Customer mapping files 
+    <mapping resource="com/krawler/hql/accounting/Customer.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Invoice.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/InvoiceDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/CreditNote.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/CreditNoteDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/CreditNoteDiscount.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Receipt.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/ReceiptDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/SalesOrder.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/SalesOrderDetail.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/Projreport_Template.hbm.xml"/>
+     Vendor mapping files 
+    <mapping resource="com/krawler/hql/accounting/Vendor.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/GoodsReceipt.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/GoodsReceiptDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/DebitNote.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/DebitNoteDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/DebitNoteDiscount.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Payment.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/PaymentDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/PurchaseOrder.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/PurchaseOrderDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingInvoiceDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingInvoice.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingReceiptDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingReceipt.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Tax.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/TaxList.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/YearLock.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Cyclecount.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/ProductCyclecount.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BankReconciliation.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BankReconciliationDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/DefaultExchangeRate.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/ExchangeRate.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/DefaultExcahangeRateDetails.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/ExchangeRateDetails.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/DepreciationDetail.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/EditHelp.hbm.xml"/>
+    <mapping resource="com/krawler/common/admin/Apiresponse.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingGoodsReceipt.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingGoodsReceiptDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingPayment.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingPaymentDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingPurchaseOrder.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingPurchaseOrderDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingSalesOrder.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingSalesOrderDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingCreditNote.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingCreditNoteDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingCreditNoteDiscount.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingDebitNote.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingDebitNoteDetail.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/BillingDebitNoteDiscount.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/RepeatedInvoices.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Tax1099Category.hbm.xml"/>
+    <mapping resource="com/krawler/hql/accounting/Tax1099Accounts.hbm.xml"/>
+    <mapping resource="deposit.hbm.xml"/>-->
+  </session-factory>
+</hibernate-configuration>
